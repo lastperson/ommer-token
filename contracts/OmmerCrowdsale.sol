@@ -11,7 +11,7 @@ contract OmmerCrowdsale is Ownable {
     OmmerToken public token;
 
     //
-    // ico can be opened and closed
+    // ico can be open or closed
     //
     bool public running;
 
