@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "ethereum smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "truffle test"
+  },
+  "author": "PV",
+  "license": "ISC",
+  "dependencies": {
+    "zeppelin-solidity": "^1.6.0"
+  }
+}
