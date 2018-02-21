@@ -189,8 +189,8 @@ contract OmmerCrowdsale is Ownable {
     function release(address _contributor) public {
         require(verified[_contributor] > 0);
         uint256 amountInOmr = verified[_contributor];
-        token.transfer(_contributor, amountInOmr);
         verified[_contributor] = 0;
+        token.transfer(_contributor, amountInOmr);
     }
 
     // @return true if crowdsale event is running, else otherwise
