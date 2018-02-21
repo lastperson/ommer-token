@@ -4,14 +4,29 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./OmmerToken.sol";
 
-
+/**
+ *   ___  _ __ ___  _ __ ___   ___ _ __
+ *  / _ \| '_ ` _ \| '_ ` _ \ / _ \ '__|
+ * | (_) | | | | | | | | | | |  __/ |
+ *  \___/|_| |_| |_|_| |_| |_|\___|_|
+ *
+ *  ommer crowdsale
+ *
+ *  https://www.ommer.com
+ *
+ *  - smart contract for receiving the contributions and automatically sending
+ *    out OMR tokens
+ *  - received funds are forwarded to a selected address (can be EOA)
+ *  - built-in KYC process: purchased tokens are kept in the contract until the
+ *    owner verifies the KYC documents and marks the buyer as verified
+ */
 contract OmmerCrowdsale is Ownable {
     using SafeMath for uint256;
 
     OmmerToken public token;
 
     //
-    // ico can be open or closed
+    // ico can be running or closed
     //
     bool public running;
 
@@ -138,9 +153,9 @@ contract OmmerCrowdsale is Ownable {
         // Let's assume we have 100 OMR tokens available and the exchange
         // rate is 10 (1 ETH buys 10 OMR). Naturally, the cap is then
         // 10 ETH. In wei the cap is 10000000000000000000 (1 * 10^19 in
-        // scientific notation). Because OMR is also denominated 
+        // scientific notation). Because OMR is also denominated
         // with 18 decimals the 100 tokens supply is
-        // 100000000000000000000 (1 * 10^20). Dividing the balance 
+        // 100000000000000000000 (1 * 10^20). Dividing the balance
         // by the exchange rate is then (1 * 10^20)/10 which is the
         // cap in wei. This cap divided by 10^18 gives the cap in ETH
         // which is 10.
