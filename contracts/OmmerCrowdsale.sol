@@ -140,6 +140,13 @@ contract OmmerCrowdsale is Ownable {
         forwardFunds();
     }
 
+    // If the contract is paused, the exchange rate can be updated
+    function setExchangeRate(uint256 _exchangeRate) public onlyOwner {
+        assert(_exchangeRate > 0);
+        assert(!isRunning);
+        exchangeRate = _exchangeRate;
+    }
+
     function start() public onlyOwner {
         // figure out how many tokens has this contract left so that
         // we know when we have reached the hard cap and won't oversell
