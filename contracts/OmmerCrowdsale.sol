@@ -2,6 +2,7 @@ pragma solidity 0.4.18;
 
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 import "./OmmerToken.sol";
 
 
@@ -21,14 +22,11 @@ import "./OmmerToken.sol";
  *  - built-in KYC process: purchased tokens are kept in the contract until the
  *    owner verifies the KYC documents and marks the buyer as verified
  */
-contract OmmerCrowdsale is Ownable {
+contract OmmerCrowdsale is Ownable, Pausable {
     using SafeMath for uint256;
 
     // This is the address of the token that this crowdsale is selling
     OmmerToken public token;
-
-    // Crowdsale can be running or closed
-    bool public running;
 
     //
     // Funding variables:
@@ -84,7 +82,7 @@ contract OmmerCrowdsale is Ownable {
         require(_fundSink != 0x0);
         require(_ommerTokenAddress != 0x0);
 
-        running = false;
+        paused = true;
         exchangeRate = _exchangeRate;
         fundSink = _fundSink;
 
@@ -110,7 +108,7 @@ contract OmmerCrowdsale is Ownable {
     // 1 ETH buys X amount of OMR
     // OMR has same amount of decimals as ETH (18)
     // So 1 wei = X * exchangeRate OMR
-    function purchaseTokens(address _beneficiary) public payable {
+    function purchaseTokens(address _beneficiary) public whenNotPaused payable {
 
         // sanity checks
         require(_beneficiary != 0x0);
@@ -141,9 +139,8 @@ contract OmmerCrowdsale is Ownable {
     }
 
     // If the contract is paused, the exchange rate can be updated
-    function setExchangeRate(uint256 _exchangeRate) public onlyOwner {
+    function setExchangeRate(uint256 _exchangeRate) public whenPaused onlyOwner {
         assert(_exchangeRate > 0);
-        assert(!isRunning);
         exchangeRate = _exchangeRate;
     }
 
@@ -172,11 +169,11 @@ contract OmmerCrowdsale is Ownable {
         // if there are no tokens then throw error
         assert(weiCap > 0);
 
-        running = true;
+        unpause();
     }
 
     function stop() public onlyOwner {
-        running = false;
+        pause();
     }
 
     // When a contributor finishes their KYC and the result is OK, the owner
@@ -206,35 +203,34 @@ contract OmmerCrowdsale is Ownable {
         token.transfer(_contributor, amountInOmr);
     }
 
-    // @return true if crowdsale event is running, else false otherwise
-    function isRunning() public constant returns (bool) {
-        return running;
-    }
-
     // Sends Ether to the fund collection wallet
     function forwardFunds() internal {
         fundSink.transfer(msg.value);
     }
 
     // Returns number of bonus OMR based on the amount of wei contributed
-    function getBonusAmount(uint256 _weiSent) internal returns (uint256) {
+    function getBonusAmount(uint256 _weiSent) internal view returns (uint256) {
+        uint256 _exchangeRate = exchangeRate;
+
         // No bonus for <= 1 ETH
-        if (_weiSent <= 1 * 10 ** 18) {
-            return 0;
-        }
         // 10% bonus for 1-5 ETH
         if (inInterval(_weiSent, 1 * 10 ** 18, 5 * 10 ** 18)) {
-            return _weiSent * 0.1;
-        }
+            _exchangeRate * 10 / 100;
+        } else
         // 20% bonus for 5-20 ETH
         if (inInterval(_weiSent, 5 * 10 ** 18, 20 * 10 ** 18)) {
-            return _weiSent * 0.2;
+            _exchangeRate * 20 / 100;
+        } else {
+            // above 20 ETH give 30% bonus
+            _exchangeRate * 30 / 100;
         }
-        // above 20 ETH give 30% bonus
-        return _weiSent * 0.3;
+
+        // represent the sent amount in OMR tokens
+        uint256 withBonusInOmr = _weiSent.mul(_exchangeRate);
+        return withBonusInOmr;
     }
 
-    function inInterval(n, a, b) internal pure returns (bool) {
+    function inInterval(uint256 n, uint256 a, uint256 b) internal pure returns (bool) {
         return n-a <= b-a;
     }
 
@@ -249,6 +245,6 @@ contract OmmerCrowdsale is Ownable {
     // @return true if the transaction can buy tokens
     function validPurchase() internal constant returns (bool) {
         bool nonZeroPurchase = msg.value != 0;
-        return running && nonZeroPurchase;
+        return nonZeroPurchase;
     }
 }

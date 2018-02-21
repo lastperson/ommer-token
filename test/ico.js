@@ -17,8 +17,8 @@ contract("OmmerCrowdsale", function(accounts) {
   });
 
   it("should start not running", async function() {
-    const isRunning = await ico.isRunning();
-    assert.equal(isRunning, false, "ico should not be running");
+    const isPaused = await ico.paused();
+    assert.equal(isPaused, true, "ico should not be running");
   });
 
   it("should throw if non-owner calls start()", async function() {
@@ -35,8 +35,8 @@ contract("OmmerCrowdsale", function(accounts) {
       const result = await ico.start({from: creator});
       assert.fail("should have thrown");
     } catch (err) {
-      const isRunning = await ico.isRunning();
-      assert.equal(isRunning, false, "ICO should not be running");
+      const isPaused = await ico.paused();
+      assert.equal(isPaused, true, "ICO should not be running");
     }
   });
 
@@ -46,24 +46,24 @@ contract("OmmerCrowdsale", function(accounts) {
       const result = await ico.start({from: joe});
       assert.fail("should have thrown");
     } catch (err) {
-      const isRunning = await ico.isRunning();
-      assert.equal(isRunning, false, "ICO should not be running");
+      const isPaused = await ico.paused();
+      assert.equal(isPaused, true, "ICO should not be running");
     }
   });
 
   it("should start the ico if ico has tokens and owner calls start()", async function() {
       await token.transfer(ico.address, 100000000, { from: creator});
       await ico.start({from: creator});
-      const isRunning = await ico.isRunning();
-      assert.equal(isRunning, true, "ICO should be running now");
+      const isPaused = await ico.paused();
+      assert.equal(isPaused, false, "ICO should be running now");
   });
 
   it("should stop the ico if the owner calls stop()", async function() {
     await token.transfer(ico.address, 100000000, { from: creator});
     await ico.start({from: creator });
     await ico.stop({from: creator });
-    const isRunning = await ico.isRunning();
-    assert.equal(isRunning, false, "ICO should be stopped now");
+    const isPaused = await ico.paused();
+    assert.equal(isPaused, true, "ICO should be stopped now");
   });
 
   it("should not stop a running ico if a non-owner calls stop()", async function() {
@@ -73,8 +73,8 @@ contract("OmmerCrowdsale", function(accounts) {
       await ico.stop({from: joe });
       assert.fail("should have thrown");
     } catch (err) {
-      const isRunning = await ico.isRunning();
-      assert.equal(isRunning, true, "ICO should still be running");
+      const isPaused = await ico.paused();
+      assert.equal(isPaused, false, "ICO should still be running");
     }
   });
 
@@ -99,7 +99,7 @@ contract("OmmerCrowdsale", function(accounts) {
     const amount = web3.toWei(1, 'ether'); // buying 1 * exchangeRate OMR (400 OMR)
     await web3.eth.sendTransaction({ from: joe, to: ico.address, value: amount });
 
-    // check that contract holds 400 omr for joe 
+    // check that contract holds 400 omr for joe
   });
 
 });
