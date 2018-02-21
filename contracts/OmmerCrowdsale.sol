@@ -172,6 +172,9 @@ contract OmmerCrowdsale is Ownable {
         running = false;
     }
 
+    // When a contributor finishes their KYC and the result is OK, the owner
+    // can verify the contributor by calling this function with the contributor's
+    // address, thus enabling the contributor to receive their purchased tokens.
     function verify(address _contributor) public onlyOwner {
         // using require instead of assert because assert failure
         // would consume all the gas available to the function call
@@ -180,12 +183,15 @@ contract OmmerCrowdsale is Ownable {
         lockedup[_contributor] = 0;
     }
 
+    // Owner can undo the KYC verification for a specified contributor
     function unverify(address _contributor) public onlyOwner {
         uint256 verifiedAmt = verified[_contributor];
         verified[_contributor] = 0;
         lockedup[_contributor].add(verifiedAmt);
     }
 
+    // Sends OMR tokens to the contributor
+    // Currenctly anyone can call this function for any contributor
     function release(address _contributor) public {
         require(verified[_contributor] > 0);
         uint256 amountInOmr = verified[_contributor];
@@ -203,6 +209,10 @@ contract OmmerCrowdsale is Ownable {
         fundSink.transfer(msg.value);
     }
 
+    // wei remaining represents how much Ether can be still sent to the contract
+    // for OMR purchases. If sent Ether amount > weiRemaining, then the purchase
+    // is cancelled as there would not be enough remaining OMR tokens to satisfy
+    // the transaction.
     function weiRemaining() internal constant returns (uint256) {
         return weiCap - weiRaised;
     }
