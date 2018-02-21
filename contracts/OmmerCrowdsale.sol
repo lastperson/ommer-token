@@ -193,7 +193,7 @@ contract OmmerCrowdsale is Ownable {
         token.transfer(_contributor, amountInOmr);
     }
 
-    // @return true if crowdsale event is running, else otherwise
+    // @return true if crowdsale event is running, else false otherwise
     function isRunning() public constant returns (bool) {
         return running;
     }
