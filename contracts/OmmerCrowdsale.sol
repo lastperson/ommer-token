@@ -198,8 +198,7 @@ contract OmmerCrowdsale is Ownable {
         return running;
     }
 
-    // send ether to the fund collection wallet
-    // override to create custom fund forwarding mechanisms
+    // Sends Ether to the fund collection wallet
     function forwardFunds() internal {
         fundSink.transfer(msg.value);
     }
