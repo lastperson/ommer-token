@@ -4,6 +4,7 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./OmmerToken.sol";
 
+
 /**
  *   ___  _ __ ___  _ __ ___   ___ _ __
  *  / _ \| '_ ` _ \| '_ ` _ \ / _ \ '__|
@@ -23,41 +24,42 @@ import "./OmmerToken.sol";
 contract OmmerCrowdsale is Ownable {
     using SafeMath for uint256;
 
+    // This is the address of the token that this crowdsale is selling
     OmmerToken public token;
 
-    //
-    // ico can be running or closed
-    //
+    // Crowdsale can be running or closed
     bool public running;
 
     //
-    // funding variables
+    // Funding variables:
+    // weiRaised, weiCap, exchangeRate, fundSink
     //
-    // total raised amount in the crowdsale
+
+    // Total raised amount in the crowdsale
     uint256 public weiRaised;
-    // cap in terms of wei
+
+    // Cap in terms of wei
     //
     // this cap is actually constant so the variable could be made
     // a constant as well
     uint256 public weiCap;
-    // how much wei is one token worth
+
+    // How much wei is one token worth
     uint256 public exchangeRate;
 
     // Fund Sink is a EOA where the proceeds of the crowdsale are
     // forwarded to.
     address public fundSink;
 
-    //
-    // keeps the amounts of ether send by contributors
+    // Keeps the amounts of ether send by contributors
     // the amount = amount of OMR
     mapping(address => uint256) public lockedup;
 
-    // tokens can only be redeemed when the contributor is approved from the
+    // Tokens can only be redeemed when the contributor is approved from the
     // KYC/AML standpoint
     // the amount = amount of OMR
     mapping(address => uint256) public verified;
 
-    //
     event TokensPurchased(
         address indexed _buyer,
         address indexed _beneficiary,
@@ -65,7 +67,6 @@ contract OmmerCrowdsale is Ownable {
         uint256 _amountOmr
     );
 
-    //
     event TokensReleased(
         address indexed _beneficiary,
         uint256 _amountOmr
