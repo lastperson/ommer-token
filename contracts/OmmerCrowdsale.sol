@@ -216,6 +216,28 @@ contract OmmerCrowdsale is Ownable {
         fundSink.transfer(msg.value);
     }
 
+    // Returns number of bonus OMR based on the amount of wei contributed
+    function getBonusAmount(uint256 _weiSent) internal returns (uint256) {
+        // No bonus for <= 1 ETH
+        if (_weiSent <= 1 * 10 ** 18) {
+            return 0;
+        }
+        // 10% bonus for 1-5 ETH
+        if (inInterval(_weiSent, 1 * 10 ** 18, 5 * 10 ** 18)) {
+            return _weiSent * 0.1;
+        }
+        // 20% bonus for 5-20 ETH
+        if (inInterval(_weiSent, 5 * 10 ** 18, 20 * 10 ** 18)) {
+            return _weiSent * 0.2;
+        }
+        // above 20 ETH give 30% bonus
+        return _weiSent * 0.3;
+    }
+
+    function inInterval(n, a, b) internal pure returns (bool) {
+        return n-a <= b-a;
+    }
+
     // wei remaining represents how much Ether can be still sent to the contract
     // for OMR purchases. If sent Ether amount > weiRemaining, then the purchase
     // is cancelled as there would not be enough remaining OMR tokens to satisfy
