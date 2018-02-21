@@ -209,7 +209,7 @@ contract OmmerCrowdsale is Ownable, Pausable {
     }
 
     // Returns number of bonus OMR based on the amount of wei contributed
-    function getBonusAmount(uint256 _weiSent) internal view returns (uint256) {
+    function getOmrWithBonusAmount(uint256 _weiSent) internal view returns (uint256) {
         uint256 _exchangeRate = exchangeRate;
 
         // No bonus for <= 1 ETH
