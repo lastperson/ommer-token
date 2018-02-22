@@ -23,7 +23,7 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  * has been mined, you can broadcast the transaction and the sent Ether
  * will be forwarded to Ommer.
  *
- * If you sent another transaction, you will need to generate a new 
+ * If you sent another transaction, you will need to generate a new
  * transaction which calls `forward` and update the nonce in that raw
  * transaction.
  */
@@ -36,7 +36,7 @@ contract SafetyWallet is Ownable {
     }
 
     function forward(uint256 _blockNum) public payable {
-        require(_blockNum > block.number);
+        require(_blockNum <= block.number);
         assert(ommerAddress != address(0));
         assert(msg.value > 0);
 
