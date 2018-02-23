@@ -29,7 +29,7 @@ contract EthUsdPrice is usingOraclize {
     }
 
     function __callback(bytes32 cbId, string result) public {
-        require(msg.sender != oraclize_cbAddress());
+        require(msg.sender == oraclize_cbAddress());
         require(validIds[cbId]);
         ethInCents = parseInt(result, 2);
         delete validIds[cbId];
