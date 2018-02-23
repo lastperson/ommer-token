@@ -2,6 +2,7 @@ let OmmerToken = artifacts.require('./OmmerToken.sol')
 let OmmerCrowdsale = artifacts.require('./OmmerCrowdsale.sol')
 let OmmerTeamVesting = artifacts.require('./OmmerTeamVesting.sol')
 let SafetyWallet = artifacts.require('./SafetyWallet.sol')
+let EthUsdPrice = artifacts.require('./EthUsdPrice.sol')
 
 module.exports = function(deployer, network, accounts) {
     deployer.deploy(OmmerToken).then(function() {
@@ -15,4 +16,5 @@ module.exports = function(deployer, network, accounts) {
     });
 
     deployer.deploy(SafetyWallet, "0x1234");
+    deployer.deploy(EthUsdPrice, { gas: 5000000 });
 };
