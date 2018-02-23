@@ -10,6 +10,6 @@
   "author": "PV",
   "license": "ISC",
   "dependencies": {
-    "zeppelin-solidity": "^1.6.0"
+    "zeppelin-solidity": "^1.7.0"
   }
 }
