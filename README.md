@@ -6,7 +6,8 @@ Dependencies
 - npm
   * (global) truffle
   * zeppelin-solidity
-  * Oraclize
+- git
+  * https://github.com/oraclize/ethereum-api
 
 Once you install node.js and npm, run `npm install` to install local node modules. You can optionally install truffle and ethereumjs-testrpc as a local module but these two are assumed to be installed globally in this README.
 
