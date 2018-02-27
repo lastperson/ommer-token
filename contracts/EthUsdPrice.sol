@@ -15,8 +15,8 @@ contract EthUsdPrice is usingOraclize {
     event LogOraclizeQuery(string description);
     event LogPriceUpdated(string price);
 
-    // Update on construction ensures that the price of ETH is always
-    // initialised.
+    // NB: ethInCents is not initialised until the first Oraclize callback comes
+    // in.
     function EthUsdPrice() public payable {
         ethPriceInitialised = false;
 
