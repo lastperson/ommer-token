@@ -1,11 +1,3 @@
-pragma solidity 0.4.18;
-
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
-import "./OmmerToken.sol";
-
-
 /**
  *   ___  _ __ ___  _ __ ___   ___ _ __
  *  / _ \| '_ ` _ \| '_ ` _ \ / _ \ '__|
@@ -22,6 +14,14 @@ import "./OmmerToken.sol";
  *  - built-in KYC process: purchased tokens are kept in the contract until the
  *    owner verifies the KYC documents and marks the buyer as verified
  */
+pragma solidity 0.4.18;
+
+import "zeppelin-solidity/contracts/math/SafeMath.sol";
+import "zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
+import "./OmmerToken.sol";
+
+
 contract OmmerCrowdsale is Ownable, Pausable {
     using SafeMath for uint256;
 
