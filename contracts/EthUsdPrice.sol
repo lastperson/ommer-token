@@ -6,6 +6,7 @@ import "oraclize/oraclizeAPI.sol";
 contract EthUsdPrice is usingOraclize {
 
     uint256 public ethInCents;
+    bool public ethPriceInitialised;
 
     // Calls to oraclize generat a unique ID and the subsequent callback uses
     // that ID. We allow callbacks only if they have a valid ID.
@@ -17,6 +18,8 @@ contract EthUsdPrice is usingOraclize {
     // Update on construction ensures that the price of ETH is always
     // initialised.
     function EthUsdPrice() public payable {
+        ethPriceInitialised = false;
+
         update();
     }
 
@@ -31,9 +34,16 @@ contract EthUsdPrice is usingOraclize {
     function __callback(bytes32 cbId, string result) public {
         require(msg.sender == oraclize_cbAddress());
         require(validIds[cbId]);
+
         ethInCents = parseInt(result, 2);
         delete validIds[cbId];
+
+        if (!ethPriceInitialised) {
+            ethPriceInitialised = true;
+        }
+
         LogPriceUpdated(result);
+
         update();
     }
 
