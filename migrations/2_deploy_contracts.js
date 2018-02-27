@@ -16,5 +16,6 @@ module.exports = function(deployer, network, accounts) {
     });
 
     deployer.deploy(SafetyWallet, "0x1234");
-    deployer.deploy(EthUsdPrice, { gas: 5000000, value: web3.toWei(1, "ether") });
+
+    deployer.deploy(EthUsdPrice, { gas: 5000000 });
 };
