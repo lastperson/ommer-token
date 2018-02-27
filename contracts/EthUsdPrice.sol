@@ -8,7 +8,7 @@ contract EthUsdPrice is usingOraclize {
     uint256 public ethInCents;
     bool public ethPriceInitialised;
 
-    // Calls to oraclize generat a unique ID and the subsequent callback uses
+    // Calls to oraclize generate a unique ID and the subsequent callback uses
     // that ID. We allow callbacks only if they have a valid ID.
     mapping(bytes32=>bool) private validIds;
 
