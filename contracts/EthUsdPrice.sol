@@ -20,7 +20,13 @@ contract EthUsdPrice is usingOraclize {
     function EthUsdPrice() public payable {
         ethPriceInitialised = false;
 
-        update();
+        // For local Ethereum network, we need to supply our own OAR contract
+        // address.
+        /* if (_localOAR != address(0)) {
+            OAR = OraclizeAddrResolverI(_localOAR);
+        } */
+
+        //update();
     }
 
     function update() public payable {
