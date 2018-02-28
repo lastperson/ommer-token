@@ -20,6 +20,7 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 import "./OmmerToken.sol";
+import "./EthUsdPrice.sol";
 
 
 contract OmmerCrowdsale is Ownable, Pausable {
