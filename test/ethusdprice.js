@@ -9,9 +9,9 @@ contract("EthUsdPrice", function(accounts) {
     ethUsdPrice = await EthUsdPrice.new({ from: creator });
   });
 
-  it('starts uninitialised', async function () {
-    const inited = await ethUsdPrice.ethPriceInitialised();
-    assert.isFalse(inited);
+  it('can tell that Oraclize has not called back', async function () {
+    const lastCb = await ethUsdPrice.lastOraclizeCallback();
+    assert.equal(lastCb, 0);
   });
 
   it('starts with price 0', async function () {

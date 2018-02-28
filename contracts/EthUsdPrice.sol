@@ -6,7 +6,7 @@ import "oraclize/oraclizeAPI.sol";
 contract EthUsdPrice is usingOraclize {
 
     uint256 public ethInCents;
-    bool public ethPriceInitialised;
+    uint256 public lastOraclizeCallback;
 
     // Calls to oraclize generate a unique ID and the subsequent callback uses
     // that ID. We allow callbacks only if they have a valid ID.
@@ -18,7 +18,7 @@ contract EthUsdPrice is usingOraclize {
     // NB: ethInCents is not initialised until the first Oraclize callback comes
     // in.
     function EthUsdPrice() public payable {
-        ethPriceInitialised = false;
+        lastOraclizeCallback = 0;
 
         // For local Ethereum network, we need to supply our own OAR contract
         // address.
@@ -44,9 +44,7 @@ contract EthUsdPrice is usingOraclize {
         ethInCents = parseInt(result, 2);
         delete validIds[cbId];
 
-        if (!ethPriceInitialised) {
-            ethPriceInitialised = true;
-        }
+        lastOraclizeCallback = block.number;
 
         LogPriceUpdated(result);
 
