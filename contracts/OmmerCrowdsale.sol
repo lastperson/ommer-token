@@ -8,11 +8,6 @@
  *
  *  https://www.ommer.com
  *
- *  - smart contract for receiving the contributions and automatically sending
- *    out OMR tokens
- *  - received funds are forwarded to a selected address (can be EOA)
- *  - built-in KYC process: purchased tokens are kept in the contract until the
- *    owner verifies the KYC documents and marks the buyer as verified
  */
 pragma solidity 0.4.18;
 
@@ -23,6 +18,17 @@ import "./OmmerToken.sol";
 import "./EthUsdPrice.sol";
 
 
+/**
+ *  Ommer crowdsale accepts ETH contributions and controls and distributes 30M
+ *  OMR Tokens.
+ *
+ *  Quick overview of this smart contract:
+ *  - smart contract for receiving the contributions and automatically sending
+ *    out OMR tokens
+ *  - received funds are forwarded to a selected address (can be EOA)
+ *  - built-in KYC process: purchased tokens are kept in the contract until the
+ *    owner verifies the KYC documents and marks the buyer as verified
+ */
 contract OmmerCrowdsale is Ownable, Pausable {
     using SafeMath for uint256;
 
