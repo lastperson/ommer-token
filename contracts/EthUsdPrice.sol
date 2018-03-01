@@ -33,7 +33,7 @@ contract EthUsdPrice is usingOraclize {
         require(hasEnoughFunds());
 
         LogOraclizeQuery("Requesting Oraclize to submit latest ETHUSD price");
-        bytes32 qId = oraclize_query(60, "URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
+        bytes32 qId = oraclize_query(600, "URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
         validIds[qId] = true;
     }
 
