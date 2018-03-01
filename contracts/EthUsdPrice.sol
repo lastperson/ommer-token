@@ -11,6 +11,19 @@ pragma solidity 0.4.18;
 import "oraclize/oraclizeAPI.sol";
 
 
+/**
+ * Contract which exposes `ethInCents` which is the Ether price in USD cents.
+ * E.g. if 1 Ether is sold at 840.32 USD on the markets, the `ethInCents` will
+ * be `84032`.
+ *
+ * This price is supplied by Oraclize callback, which sets the value. Currently
+ * there is no proof provided for the callback, other then the value and the
+ * corresponding ID which was generated when this contract called Oraclize.
+ *
+ * If this contract runs out of Ether, the callback cycle will interrupt until
+ * the `update` function is called with a transaction which also replenishes the
+ * balance of the contract.
+ */
 contract EthUsdPrice is usingOraclize {
 
     uint256 public ethInCents;
