@@ -8,7 +8,7 @@ contract("OmmerCrowdsale", function(accounts) {
 
   beforeEach(async function () {
     token = await OmmerToken.new({ from: creator });
-    ico = await OmmerCrowdsale.new(400, creator, token.address, { from: creator });
+    ico = await OmmerCrowdsale.new(400, creator, token.address, { from: creator, gas: 5000000 });
   });
 
   it('has a symbol', async function () {
