@@ -31,7 +31,7 @@ contract EthUsdPrice is usingOraclize {
 
     // Calls to oraclize generate a unique ID and the subsequent callback uses
     // that ID. We allow callbacks only if they have a valid ID.
-    mapping(bytes32=>bool) private validIds;
+    mapping(bytes32 => bool) private validIds;
 
     event LogOraclizeQuery(string description);
     event LogPriceUpdated(string price);
@@ -54,6 +54,7 @@ contract EthUsdPrice is usingOraclize {
         require(hasEnoughFunds());
 
         LogOraclizeQuery("Requesting Oraclize to submit latest ETHUSD price");
+        
         bytes32 qId = oraclize_query(600, "URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
         validIds[qId] = true;
     }
