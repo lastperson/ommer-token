@@ -15,6 +15,7 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 import "./OmmerToken.sol";
+import "./OmmerUtils.sol";
 import "./EthUsdPrice.sol";
 
 
@@ -216,7 +217,7 @@ contract OmmerCrowdsale is Ownable, Pausable {
     }
 
     // Returns number of bonus OMR based on the amount of wei contributed
-    function getOmrWithBonusAmount(uint256 _weiSent) internal view returns (uint256) {
+    /* function getOmrWithBonusAmount(uint256 _weiSent) internal view returns (uint256) {
         uint256 _exchangeRate = exchangeRate;
 
         // No bonus for <= 1 ETH
@@ -235,11 +236,7 @@ contract OmmerCrowdsale is Ownable, Pausable {
         // represent the sent amount in OMR tokens
         uint256 withBonusInOmr = _weiSent.mul(_exchangeRate);
         return withBonusInOmr;
-    }
-
-    function inInterval(uint256 n, uint256 a, uint256 b) internal pure returns (bool) {
-        return n-a <= b-a;
-    }
+    } */
 
     // wei remaining represents how much Ether can be still sent to the contract
     // for OMR purchases. If sent Ether amount > weiRemaining, then the purchase
