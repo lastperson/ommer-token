@@ -38,7 +38,7 @@ contract EthUsdPrice is usingOraclize {
 
     // NB: ethInCents is not initialised until the first Oraclize callback comes
     // in.
-    function EthUsdPrice() public payable {
+    function EthUsdPrice() public {
         lastOraclizeCallback = 0;
 
         // For local Ethereum network, we need to supply our own OAR contract
@@ -54,7 +54,7 @@ contract EthUsdPrice is usingOraclize {
         require(hasEnoughFunds());
 
         LogOraclizeQuery("Requesting Oraclize to submit latest ETHUSD price");
-        
+
         bytes32 qId = oraclize_query(600, "URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
         validIds[qId] = true;
     }
