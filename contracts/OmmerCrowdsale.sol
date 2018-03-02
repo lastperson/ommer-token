@@ -66,6 +66,14 @@ contract OmmerCrowdsale is Ownable, Pausable {
     // the amount = amount of OMR
     mapping(address => uint256) public verified;
 
+
+    /** ######################################################################
+     *
+     *  E V E N T S
+     *
+     * ######################################################################
+     */
+
     event TokensPurchased(
         address indexed _buyer,
         address indexed _beneficiary,
@@ -78,9 +86,12 @@ contract OmmerCrowdsale is Ownable, Pausable {
         uint256 _amountOmr
     );
 
-    //
-    // Crowdsale Constructor
-    //
+    /** ######################################################################
+     *
+     *  F U N C T I O N S
+     *
+     * ######################################################################
+     */
     function OmmerCrowdsale(
         uint256 _exchangeRate,
         address _fundSink,
