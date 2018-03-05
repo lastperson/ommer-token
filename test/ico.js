@@ -90,7 +90,7 @@ contract("OmmerIco", function(accounts) {
       await ommerIco.verify(joe, { from: joe });
       assert.fail("should have thrown");
     } catch (err) {
-      // 
+      //
     }
   });
 
@@ -116,7 +116,7 @@ contract("OmmerIco", function(accounts) {
     assert.equal(joeOmr.toNumber(), 425.12 * 10 ** omrDecimals);
   });
 
-  it.only("should throw if paused ICO is sent a contribution ", async () => {
+  it("should throw if paused ICO is sent a contribution ", async () => {
     try {
       await omr.transfer(ommerIco.address, 10000 * 10 ** omrDecimals, { from: creator });
       await web3.eth.sendTransaction({from: joe, to: ommerIco.address, value: web3.toWei(0.5, 'ether'), gas: 1000000 });
