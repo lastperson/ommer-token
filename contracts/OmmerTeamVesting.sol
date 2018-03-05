@@ -73,7 +73,7 @@ contract OmmerTeamVesting is Ownable {
         allocations[memberAddress] = original.sub(amount);
     }
 
-    function memberAllocation(address memberAddress) public constant returns (uint256) {
+    function getMemberAllocation(address memberAddress) public constant returns (uint256) {
         return allocations[memberAddress];
     }
 }
