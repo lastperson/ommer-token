@@ -29,4 +29,10 @@ contract("OmmerToken", function(accounts) {
     assert.equal(totalSupply, 1 * 10**8 * 10**18);
   });
 
+  it("assigns all of the supply to the creator", async () => {
+    const creatorBalance = await token.balanceOf(creator);
+    const totalSupply = await token.totalSupply();
+    assert.equal(creatorBalance.toNumber(), totalSupply);
+  })
+
 });
