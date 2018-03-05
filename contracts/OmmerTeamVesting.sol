@@ -34,8 +34,8 @@ contract OmmerTeamVesting is Ownable {
     // vesting end would become some date in the very distant future.
     // for this reason, the maximum extension is 1 year.
     // DANGER2: repeated extension by one year would also move the
-    // vesting date into some distant future. Therefore, the maximum 
-    // possible vesting is 3 years from the original vesting date. 
+    // vesting date into some distant future. Therefore, the maximum
+    // possible vesting is 3 years from the original vesting date.
     function extendVesting(uint256 noDays) public onlyOwner {
         require(noDays > 0);
         require(noDays <= 365);
@@ -73,6 +73,7 @@ contract OmmerTeamVesting is Ownable {
         allocations[memberAddress] = original.sub(amount);
     }
 
-    function memberAllocation() public constant returns (uint256) {
+    function memberAllocation(address memberAddress) public constant returns (uint256) {
+        return allocations[memberAddress];
     }
 }
