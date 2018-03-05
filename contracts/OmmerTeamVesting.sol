@@ -1,3 +1,11 @@
+/**
+ *   ___  _ __ ___  _ __ ___   ___ _ __
+ *  / _ \| '_ ` _ \| '_ ` _ \ / _ \ '__|
+ * | (_) | | | | | | | | | | |  __/ |
+ *  \___/|_| |_| |_|_| |_| |_|\___|_|
+ *
+ * https://www.ommer.com
+ */
 pragma solidity 0.4.18;
 
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
