@@ -68,9 +68,9 @@ contract OmmerTeamVesting is Ownable {
         // if not enough balance, then throw
         require(amount <= allocations[memberAddress]);
 
-        token.transfer(memberAddress, amount);
-
         allocations[memberAddress] = original.sub(amount);
+
+        token.transfer(memberAddress, amount);
     }
 
     function getMemberAllocation(address memberAddress) public constant returns (uint256) {
