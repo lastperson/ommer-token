@@ -117,7 +117,7 @@ contract OmmerIco is EthUsdPrice, Pausable {
     function purchaseTokens(address _beneficiary) public whenNotPaused payable {
         require(getMinPossibleContribution() <= msg.value);
 
-        uint256 omrTokens = getUsdCentValue(msg.value) / 100 * 10 ** omr.decimals();
+        uint256 omrTokens = getUsdCentValue(msg.value) * 10 ** omr.decimals() / 100;
 
         require(getRemainingTokensForSale() >= omrTokens);
 

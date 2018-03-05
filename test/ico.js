@@ -78,7 +78,7 @@ contract("OmmerIco", function(accounts) {
     const c = await ommerIco.contributions(joe);
     const unconfirmed = c[0].toNumber();
     const withdrawn = c[1].toNumber();
-    assert.equal(unconfirmed, Math.round(0.7 * 850.25) * 10 ** omrDecimals);
+    assert.equal(unconfirmed, 595.17 * 10 ** omrDecimals);
     assert.equal(withdrawn, 0);
   });
 
@@ -113,7 +113,7 @@ contract("OmmerIco", function(accounts) {
     await web3.eth.sendTransaction({from: joe, to: ommerIco.address, value: web3.toWei(0.5, 'ether'), gas: 1000000 });
     await ommerIco.verify(joe, { from: creator });
     const joeOmr = await omr.balanceOf(joe);
-    assert.equal(joeOmr, Math.round(0.5 * 850.25) * 10 ** omrDecimals);
+    assert.equal(joeOmr.toNumber(), 425.12 * 10 ** omrDecimals);
   });
 
   it("should throw if paused ICO is sent a contribution ", async () => {
