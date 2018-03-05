@@ -15,20 +15,53 @@ import "./OmmerToken.sol";
 
 contract OmmerTeamVesting is Ownable {
 
+    /** ######################################################################
+     *
+     *  A T T A C H   L I B R A R Y   F U N C T I O N S
+     *
+     * ######################################################################
+     */
     using SafeMath for uint256;
 
+
+    /** ######################################################################
+     *
+     *  S T O R A G E
+     *
+     * ######################################################################
+     */
+
+    /**
+     * The point in time after which it is possible to withdraw from the contract
+     */
     uint256 public vestingDate;
+
+    /**
+     * The maximum possible time until which the OMR tokens can be held by the
+     * contract.
+     */
     uint256 public maxVestingDate;
 
     OmmerToken public token;
 
-    // allocated tokens to team members
-    //
-    // each team member supplies their own EOA and this mapping
-    // keeps the number of tokens allocated to that EOA
+    /**
+     * Token allocations for the team members.
+     *
+     * Each team member supplies their own EOA and this mapping
+     * keeps the number of tokens allocated to that EOA
+     */
     mapping(address => uint256) public allocations;
 
+
+    /** ######################################################################
+     *
+     *  F U N C T I O N S
+     *
+     * ######################################################################
+     */
+
     function OmmerTeamVesting(uint256 vestingPeriodInDays) public {
+
         // not using safemath here
         vestingDate = now + vestingPeriodInDays * 1 days;
         maxVestingDate = vestingDate + 3 years;
@@ -83,5 +116,13 @@ contract OmmerTeamVesting is Ownable {
 
     function getMemberAllocation(address memberAddress) public constant returns (uint256) {
         return allocations[memberAddress];
+    }
+
+    function getNumRemainingDays() public view returns (uint256) {
+        if (now > vestingDate) {
+            return 0;
+        } else {
+            return (vestingDate - now) / 1 days;
+        }
     }
 }
