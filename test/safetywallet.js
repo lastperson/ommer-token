@@ -1,4 +1,5 @@
-var SafetyWallet = artifacts.require("./SafetyWallet.sol");
+const SafetyWallet = artifacts.require("./SafetyWallet.sol");
+const EthereumTx = require('ethereumjs-tx')
 
 const web3call = (fn) =>
   new Promise((resolve, reject) =>
@@ -63,5 +64,30 @@ contract("SafetyWallet", function(accounts) {
     }
   });
 
+
+  it.only("should accept pre-signed tx after the blockNumber passes", async () => {
+    const nonce = web3.eth.getTransactionCount(joe);
+    console.log(nonce);
+    const contract = web3.eth.contract(safetyWallet.abi);
+    const instance = contract.at(safetyWallet.address);
+    const fnCallHash = web3.sha3('forward(uint256 _blockNum)');
+    const fnCallHash4bytes = fnCallHash.substr(0, 10);
+    const argHash = web3.fromAscii(web3.eth.blockNumber + 2);
+    const dataEnc = fnCallHash4bytes + argHash.substr(2);
+    const rawTx = {
+      to: safetyWallet.address,
+      value: web3.toHex(web3.toWei(0.5, 'ether')),
+      gasPrice: web3.toHex(web3.toWei(26, 'GWei')),
+      gasLimit: web3.toHex(100000),
+      nonce: nonce,
+      data: dataEnc
+    };
+    const joePk = Buffer.from('ae6ae8e5ccbfb04590405997ee2d52d2b550726157b875055c56d94e974d162f', 'hex');
+    const tx = new EthereumTx(rawTx);
+    tx.sign(joePk);
+    const serializedTx = tx.serialize();
+    console.log(serializedTx);
+    console.log(tx);
+  });
 
 });
