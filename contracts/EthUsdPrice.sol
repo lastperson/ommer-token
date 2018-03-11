@@ -32,6 +32,9 @@ contract EthUsdPrice is usingOraclize {
     // Calls to oraclize generate a unique ID and the subsequent callback uses
     // that ID. We allow callbacks only if they have a valid ID.
     mapping(bytes32 => bool) private validIds;
+    
+    // Allow only single auto update cycle, to prevent DOS attack.
+    bytes32 private autoUpdateId;
 
     event LogOraclizeQuery(string description);
     event LogPriceUpdated(string price);
@@ -52,10 +55,21 @@ contract EthUsdPrice is usingOraclize {
 
     function update() public payable {
         require(hasEnoughFunds());
+        require(autoUpdateId == bytes32(0));
 
         LogOraclizeQuery("Requesting Oraclize to submit latest ETHUSD price");
 
         bytes32 qId = oraclize_query(3600, "URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
+        validIds[qId] = true;
+        autoUpdateId = qId;
+    }
+    
+    function instantUpdate() public payable {
+        require(hasEnoughFundsInThisCall());
+
+        LogOraclizeQuery("Requesting Oraclize to submit latest ETHUSD price instantly");
+
+        bytes32 qId = oraclize_query("URL", "json(https://api.infura.io/v1/ticker/ethusd).ask");
         validIds[qId] = true;
     }
 
@@ -70,10 +84,24 @@ contract EthUsdPrice is usingOraclize {
 
         LogPriceUpdated(result);
 
+        if (cbId == autoUpdateId) {
+            autoUpdateId = bytes32(0);
+        } else {
+            // Don't auto update if it was instant update.
+            return;
+        }
+        if (!hasEnoughFunds()) {
+            // Exit to not revert received price.
+            return;
+        }
         update();
     }
 
-    function hasEnoughFunds() internal returns (bool) {
+    function hasEnoughFunds() internal view returns (bool) {
         return oraclize_getPrice("URL") <= this.balance;
+    }
+
+    function hasEnoughFundsInThisCall() internal view returns (bool) {
+        return oraclize_getPrice("URL") <= msg.value;
     }
 }
