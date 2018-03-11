@@ -101,13 +101,14 @@ contract OmmerTeamVesting is Ownable {
     function withdraw(address memberAddress, uint256 amount) public {
         // only member or the owner can initiate the transfer
         require(memberAddress == msg.sender || msg.sender == owner);
+        require(vestingDate <= now);
 
         uint256 original = allocations[memberAddress];
 
         // if no balance, then throw
         require(original > 0);
         // if not enough balance, then throw
-        require(amount <= allocations[memberAddress]);
+        require(amount <= original);
 
         allocations[memberAddress] = original.sub(amount);
 
