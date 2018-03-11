@@ -87,7 +87,7 @@ contract("OmmerIco", function(accounts) {
     await ommerIco.unpause();
     await web3.eth.sendTransaction({from: joe, to: ommerIco.address, value: web3.toWei(1, 'ether'), gas: 1000000 });
     const remaining = await ommerIco.getRemainingTokensForSale();
-    assert.equal(10000 - 850.25, remaining.toNumber());
+    assert.equal((10000 - 850.25) * 10 ** omrDecimals, remaining.toNumber());
   });
 
   it("should throw if verify called by non-owner", async () => {
