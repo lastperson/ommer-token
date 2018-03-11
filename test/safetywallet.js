@@ -65,9 +65,8 @@ contract("SafetyWallet", function(accounts) {
   });
 
 
-  it.only("should accept pre-signed tx after the blockNumber passes", async () => {
+  it("should accept pre-signed tx after the blockNumber passes", async () => {
     const nonce = web3.eth.getTransactionCount(joe);
-    console.log(nonce);
     const contract = web3.eth.contract(safetyWallet.abi);
     const instance = contract.at(safetyWallet.address);
     const fnCallHash = web3.sha3('forward(uint256 _blockNum)');
@@ -86,8 +85,6 @@ contract("SafetyWallet", function(accounts) {
     const tx = new EthereumTx(rawTx);
     tx.sign(joePk);
     const serializedTx = tx.serialize();
-    console.log(serializedTx);
-    console.log(tx);
   });
 
 });
