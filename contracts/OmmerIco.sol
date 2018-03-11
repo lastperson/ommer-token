@@ -125,7 +125,7 @@ contract OmmerIco is EthUsdPrice, Pausable {
 
         c.unconfirmed = c.unconfirmed.add(omrTokens);
 
-        _remainingOmr.sub(omrTokens);
+        _remainingOmr = _remainingOmr.sub(omrTokens);
 
         forwardFunds();
     }
