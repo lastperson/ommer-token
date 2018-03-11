@@ -163,7 +163,7 @@ contract OmmerIco is EthUsdPrice, Pausable {
      * NOTE: there's no rounding!
      */
     function getUsdCentValue(uint256 _wei) public view returns (uint256) {
-        return (_wei * 100 / 1 ether * ethInCents / 100);
+        return (_wei * ethInCents) / 1 ether;
     }
 
     function getRemainingTokensForSale() public view returns (uint256) {
