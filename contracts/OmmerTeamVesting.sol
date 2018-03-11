@@ -114,7 +114,7 @@ contract OmmerTeamVesting is Ownable {
         token.transfer(memberAddress, amount);
     }
 
-    function getMemberAllocation(address memberAddress) public constant returns (uint256) {
+    function getMemberAllocation(address memberAddress) public view returns (uint256) {
         return allocations[memberAddress];
     }
 
