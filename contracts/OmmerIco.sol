@@ -174,8 +174,8 @@ contract OmmerIco is EthUsdPrice, Pausable {
      * Returns the minimum possible contribution in wei.
      * The minimum is 0.01 ETH ().
      */
-    function getMinPossibleContribution() public constant returns (uint256) {
-        return 1 ether / 100;
+    function getMinPossibleContribution() public pure returns (uint256) {
+        return 0.01 ether;
     }
 
     /**
